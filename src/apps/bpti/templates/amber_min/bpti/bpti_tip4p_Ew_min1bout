@@ -1,0 +1,52 @@
+
+          -------------------------------------------------------
+          Amber 12 SANDER                              2012
+          -------------------------------------------------------
+
+| Run on 10/05/2013 at 17:53:24
+  [-O]verwriting output
+
+File Assignments:
+|  MDIN: amber_min_1b                                                          
+| MDOUT: bpti_tip4p_Ew_min1bout                                                
+|INPCRD: bpti_chk.rst                                                          
+|  PARM: bpti_tip4p_Ew.prmtop                                                  
+|RESTRT: bpti_tip4p_Ew_min1.rst                                                
+|  REFC: bpti_tip4p_Ew.rst                                                     
+| MDVEL: mdvel                                                                 
+|  MDEN: mden                                                                  
+| MDCRD: mdcrd                                                                 
+|MDINFO: mdinfo                                                                
+|  MTMD: mtmd                                                                  
+|INPDIP: inpdip                                                                
+|RSTDIP: rstdip                                                                
+
+|INPTRA: inptraj                                                               
+|
+
+ Here is the input file:
+
+bpti: initial minimization solvent + ions                                      
+ &cntrl                                                                        
+  imin   = 1,                                                                  
+  maxcyc = 1000,                                                               
+  ncyc   = 500,                                                                
+  ntb    = 1,                                                                  
+  ntr    = 1,                                                                  
+  cut    = 10.0                                                                
+ /                                                                             
+Hold bpti fixed                                                                
+500.0                                                                          
+RES 1 58                                                                       
+END                                                                            
+END                                                                            
+
+--------------------------------------------------------------------------------
+   1.  RESOURCE   USE: 
+--------------------------------------------------------------------------------
+
+| Flags:                                                                        
+ getting new box info from bottom of inpcrd
+|  INFO: Old style inpcrd file read
+
+ peek_ewald_inpcrd: SHOULD NOT BE HERE

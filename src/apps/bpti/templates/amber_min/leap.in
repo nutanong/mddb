@@ -1,0 +1,13 @@
+source leaprc.ff10
+loadamberparams ions94.lib
+loadamberparams frcmod.ionsjc_tip4pew
+loadamberparams solvents.lib
+loadAmberParams frcmod.tip4pew
+protein = loadpdb protein.pdb 
+WAT=T4E
+bond protein.5.SG protein.55.SG
+bond protein.14.SG protein.38.SG
+bond protein.30.SG protein.51.SG
+set protein box {{ 51.26 51.26 51.26 }}
+saveamberparm protein protein.prmtop protein.rst
+quit

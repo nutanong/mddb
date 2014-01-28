@@ -1,0 +1,17 @@
+bpti: 200ps MD on bpti 
+ &cntrl
+  imin   = 0,
+  irest  = 0,
+  ntx    = 1,
+  ntb    = 1,
+  cut    = 10.0,
+  ntc    = 2,
+  ntf    = 2,
+  tempi  = 0.0,
+  temp0  = 300.0,
+  ntt    = 3,
+  gamma_ln = 1.0,
+  nstlim = 100000, dt = 0.002
+  ntpr = 100, ntwx = 100, ntwr = 1000
+ &ewald
+ order=5

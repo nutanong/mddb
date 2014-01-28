@@ -1,0 +1,13 @@
+ &cntrl
+   ntx=5, irest=1,
+   ntc=2, ntf=2, tol=0.000001,
+   nstlim={nstep_simulation}, 
+   ntpr={trj_save_freq}, ntwx={trj_save_freq},
+   ntwr={trj_save_freq}, 
+   dt=0.002, cut=8.,
+   ntt=1, tautp=100, ntb=1, ntp=0,
+   ioutfm=1,
+ /
+ &ewald
+  dsum_tol=0.000001,
+ /

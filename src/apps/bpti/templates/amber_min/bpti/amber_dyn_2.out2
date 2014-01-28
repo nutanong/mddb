@@ -1,0 +1,126 @@
+
+          -------------------------------------------------------
+          Amber 12 SANDER                              2012
+          -------------------------------------------------------
+
+| Run on 10/04/2013 at 15:54:35
+  [-O]verwriting output
+
+File Assignments:
+|  MDIN: amber_dyn_2b                                                          
+| MDOUT: amber_dyn_2.out2                                                      
+|INPCRD: bpti_dyn_1.rst                                                        
+|  PARM: bpti.prmtop                                                           
+|RESTRT: bpti_dyn_2.rst                                                        
+|  REFC: refc                                                                  
+| MDVEL: mdvel                                                                 
+|  MDEN: mden                                                                  
+| MDCRD: bpti_dyn_2.mdcrd                                                      
+|MDINFO: mdinfo                                                                
+|  MTMD: mtmd                                                                  
+|INPDIP: inpdip                                                                
+|RSTDIP: rstdip                                                                
+
+|INPTRA: inptraj                                                               
+|
+
+ Here is the input file:
+
+bpti: full system 100ps MD                                                     
+ &cntrl                                                                        
+  imin = 0, irest = 1, ntx = 7,                                                
+  ntb = 2, ntp = 0,                                                            
+  cut = 10.0, ntr = 0,                                                         
+  ntc = 2, ntf = 2,                                                            
+  tempi = 300.0, temp0 = 300.0,                                                
+  ntt = 3, gamma_ln = 1.0,                                                     
+  nstlim = 50000, dt = 0.002,                                                  
+  ntpr = 100, ntwx = 100, ntwr = 1000                                          
+ /                                                                             
+
+--------------------------------------------------------------------------------
+   1.  RESOURCE   USE: 
+--------------------------------------------------------------------------------
+
+| Flags:                                                                        
+ getting new box info from bottom of inpcrd
+|  INFO: Old style inpcrd file read
+
+| peek_ewald_inpcrd: Box info found
+|Largest sphere to fit in unit cell has radius =    25.630
+| New format PARM file being parsed.
+| Version =    1.000 Date = 10/02/13 Time = 15:11:12
+ NATOM  =   13549 NTYPES =      15 NBONH =   13089 MBONA  =     465
+ NTHETH =    1002 MTHETA =     624 NPHIH =    1983 MPHIA  =    1546
+ NHPARM =       0 NPARM  =       0 NNB   =   21788 NRES   =    4279
+ NBONA  =     465 NTHETA =     624 NPHIA =    1546 NUMBND =      33
+ NUMANG =      73 NPTRA  =      33 NATYP =      22 NPHB   =       1
+ IFBOX  =       0 NMXRS  =      26 IFCAP =       0 NEXTRA =       0
+ NCOPY  =       0
+
+
+|     Memory Use     Allocated
+|     Real              761189
+|     Hollerith          44928
+|     Integer           500420
+|     Max Pairs        7804224
+|     nblistReal        162588
+|     nblist Int        468423
+|       Total            41662 kbytes
+
+| Note: 1-4 EEL scale factors are being read from the topology file.
+
+| Note: 1-4 VDW scale factors are being read from the topology file.
+| Duplicated    0 dihedrals
+| Duplicated    0 dihedrals
+
+--------------------------------------------------------------------------------
+   2.  CONTROL  DATA  FOR  THE  RUN
+--------------------------------------------------------------------------------
+
+default_name                                                                    
+
+General flags:
+     imin    =       0, nmropt  =       0
+
+Nature and format of input:
+     ntx     =       7, irest   =       1, ntrx    =       1
+
+Nature and format of output:
+     ntxo    =       1, ntpr    =     100, ntrx    =       1, ntwr    =    1000
+     iwrap   =       0, ntwx    =     100, ntwv    =       0, ntwe    =       0
+     ioutfm  =       0, ntwprt  =       0, idecomp =       0, rbornstat=      0
+
+Potential function:
+     ntf     =       2, ntb     =       2, igb     =       0, nsnb    =      25
+     ipol    =       0, gbsa    =       0, iesp    =       0
+     dielc   =   1.00000, cut     =  10.00000, intdiel =   1.00000
+
+Frozen or restrained atoms:
+     ibelly  =       0, ntr     =       0
+
+Molecular dynamics:
+     nstlim  =     50000, nscm    =      1000, nrespa  =         1
+     t       =   0.00000, dt      =   0.00200, vlimit  =  20.00000
+
+Langevin dynamics temperature regulation:
+     ig      =   71277
+     temp0   = 300.00000, tempi   = 300.00000, gamma_ln=   1.00000
+
+SHAKE:
+     ntc     =       2, jfastw  =       0
+     tol     =   0.00001
+
+Ewald parameters:
+     verbose =       0, ew_type =       0, nbflag  =       1, use_pme =       1
+     vdwmeth =       1, eedmeth =       1, netfrc  =       1
+     Box X =   51.260   Box Y =   51.260   Box Z =   51.260
+     Alpha =   90.000   Beta  =   90.000   Gamma =   90.000
+     NFFT1 =   54       NFFT2 =   54       NFFT3 =   54
+     Cutoff=   10.000   Tol   =0.100E-04
+     Ewald Coefficient =  0.27511
+     Interpolation order =    4
+
+  NTB set but no NTP option (must be 1 or 2)
+
+ *** input error(s)

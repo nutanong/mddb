@@ -1,0 +1,1720 @@
+
+          -------------------------------------------------------
+          Amber 12 SANDER                              2012
+          -------------------------------------------------------
+
+| PMEMD implementation of SANDER, Release 12
+
+| Run on 10/05/2013 at 11:32:27
+
+  [-O]verwriting output
+
+File Assignments:
+|   MDIN: amber_dyn_2e                                                          
+|  MDOUT: amber_pmemd_cuda_dyn_2_tip4p_Ew.out                                   
+| INPCRD: bpti_pmdmd_cuda_tip4p_Ew_dyn1.rst                                     
+|   PARM: bpti_tip4p_Ew.prmtop                                                  
+| RESTRT: bpti_pmdmd_cuda_tip4p_Ew_dyn2.rst                                     
+|   REFC: refc                                                                  
+|  MDVEL: mdvel                                                                 
+|   MDEN: mden                                                                  
+|  MDCRD: bpti_pmemd_cuda_tip4p_Ew_dyn_2.mdcrd                                  
+| MDINFO: mdinfo                                                                
+
+
+ Here is the input file:
+
+ &cntrl                                                                        
+   ntx=5, irest=1,                                                             
+   ntc=2, ntf=2, tol=0.000001,                                                 
+   nstlim=100000,                                                              
+   ntpr=1000, ntwx=1000,                                                       
+   ntwr=10000,                                                                 
+   dt=0.002, cut=8.,                                                           
+   ntt=0, ntb=1, ntp=0,                                                        
+   ioutfm=1,                                                                   
+ /                                                                             
+ &ewald                                                                        
+  dsum_tol=0.000001,                                                           
+ /                                                                             
+
+
+ 
+|--------------------- INFORMATION ----------------------
+| GPU (CUDA) Version of PMEMD in use: NVIDIA GPU IN USE.
+|                     Version 12.2
+| 
+|                      01/10/2013
+| 
+| Implementation by:
+|                    Ross C. Walker     (SDSC)
+|                    Scott Le Grand     (nVIDIA)
+|                    Duncan Poole       (nVIDIA)
+| 
+| CAUTION: The CUDA code is currently experimental.
+|          You use it at your own risk. Be sure to
+|          check ALL results carefully.
+| 
+| Precision model in use:
+|      [SPFP] - Mixed Single/Double/Fixed Point Precision.
+|               (Default)
+| 
+|--------------------------------------------------------
+ 
+|----------------- CITATION INFORMATION -----------------
+|
+|    When publishing work that utilized the CUDA version
+|    of AMBER, please cite the following in addition to
+|    the regular AMBER citations:
+|
+|  - Romelia Salomon-Ferrer; Andreas W. Goetz; Duncan
+|    Poole; Scott Le Grand; Ross C. Walker "Routine
+|    microsecond molecular dynamics simulations with
+|    AMBER - Part II: Particle Mesh Ewald", J. Chem.
+|    Theory Comput., 2012, (In prep).
+|
+|  - Andreas W. Goetz; Mark J. Williamson; Dong Xu;
+|    Duncan Poole; Scott Le Grand; Ross C. Walker
+|    "Routine microsecond molecular dynamics simulations
+|    with AMBER - Part I: Generalized Born", J. Chem.
+|    Theory Comput., 2012, 8 (5), pp1542-1555.
+|
+|  - Scott Le Grand; Andreas W. Goetz; Ross C. Walker
+|    "SPFP: Speed without compromise - a mixed precision
+|    model for GPU accelerated molecular dynamics
+|    simulations.", Comp. Phys. Comm., 2013, 184
+|    pp374-380, DOI: 10.1016/j.cpc.2012.09.022
+|
+|--------------------------------------------------------
+ 
+|------------------- GPU DEVICE INFO --------------------
+|
+|   CUDA Capable Devices Detected:      8
+|           CUDA Device ID in use:      0
+|                CUDA Device Name: GeForce GTX 580
+|     CUDA Device Global Mem Size:   3071 MB
+| CUDA Device Num Multiprocessors:     16
+|           CUDA Device Core Freq:   1.54 GHz
+|
+|--------------------------------------------------------
+ 
+ 
+| Conditional Compilation Defines Used:
+| DIRFRC_COMTRANS
+| DIRFRC_EFS
+| DIRFRC_NOVEC
+| PUBFFT
+| FFTLOADBAL_2PROC
+| BINTRAJ
+| CUDA
+
+| Largest sphere to fit in unit cell has radius =    25.630
+
+| New format PARM file being parsed.
+| Version =    1.000 Date = 10/05/13 Time = 09:24:48
+
+| Note: 1-4 EEL scale factors are being read from the topology file.
+
+| Note: 1-4 VDW scale factors are being read from the topology file.
+| Duplicated    0 dihedrals
+
+| Duplicated    0 dihedrals
+
+--------------------------------------------------------------------------------
+   1.  RESOURCE   USE: 
+--------------------------------------------------------------------------------
+
+ getting new box info from bottom of inpcrd
+
+ NATOM  =   13543 NTYPES =      15 NBONH =   13083 MBONA  =     468
+ NTHETH =     996 MTHETA =     630 NPHIH =    1977 MPHIA  =    1558
+ NHPARM =       0 NPARM  =       0 NNB   =   21782 NRES   =    4279
+ NBONA  =     468 NTHETA =     630 NPHIA =    1558 NUMBND =      32
+ NUMANG =      72 NPTRA  =      34 NATYP =      20 NPHB   =       1
+ IFBOX  =       0 NMXRS  =      26 IFCAP =       0 NEXTRA =       0
+ NCOPY  =       0
+
+| Coordinate Index Table dimensions:    11   11   11
+| Direct force subcell size =     4.6600    4.6600    4.6600
+
+--------------------------------------------------------------------------------
+   2.  CONTROL  DATA  FOR  THE  RUN
+--------------------------------------------------------------------------------
+
+default_name                                                                    
+
+General flags:
+     imin    =       0, nmropt  =       0
+
+Nature and format of input:
+     ntx     =       5, irest   =       1, ntrx    =       1
+
+Nature and format of output:
+     ntxo    =       1, ntpr    =    1000, ntrx    =       1, ntwr    =   10000
+     iwrap   =       0, ntwx    =    1000, ntwv    =       0, ntwe    =       0
+     ioutfm  =       1, ntwprt  =       0, idecomp =       0, rbornstat=      0
+
+Potential function:
+     ntf     =       2, ntb     =       1, igb     =       0, nsnb    =      25
+     ipol    =       0, gbsa    =       0, iesp    =       0
+     dielc   =   1.00000, cut     =   8.00000, intdiel =   1.00000
+
+Frozen or restrained atoms:
+     ibelly  =       0, ntr     =       0
+
+Molecular dynamics:
+     nstlim  =    100000, nscm    =      1000, nrespa  =         1
+     t       =   0.00000, dt      =   0.00200, vlimit  =  -1.00000
+
+SHAKE:
+     ntc     =       2, jfastw  =       0
+     tol     =   0.00000
+
+| Intermolecular bonds treatment:
+|     no_intermolecular_bonds =       1
+
+| Energy averages sample interval:
+|     ene_avg_sampling =    1000
+
+Ewald parameters:
+     verbose =       0, ew_type =       0, nbflag  =       1, use_pme =       1
+     vdwmeth =       1, eedmeth =       1, netfrc  =       1
+     Box X =   51.260   Box Y =   51.260   Box Z =   51.260
+     Alpha =   90.000   Beta  =   90.000   Gamma =   90.000
+     NFFT1 =   56       NFFT2 =   56       NFFT3 =   56
+     Cutoff=    8.000   Tol   =0.100E-05
+     Ewald Coefficient =  0.39467
+     Interpolation order =    4
+
+--------------------------------------------------------------------------------
+   3.  ATOMIC COORDINATES AND VELOCITIES
+--------------------------------------------------------------------------------
+
+default_name                                                                    
+ begin time read from input coords =    20.000 ps
+
+ 
+ Number of triangulated 3-point waters found:     4215
+
+     Sum of charges from parm topology file =  -0.00000459
+     Forcing neutrality...
+
+| Dynamic Memory, Types Used:
+| Reals              473679
+| Integers           370757
+
+| Nonbonded Pairs Initial Allocation:     2262019
+
+| GPU memory information (estimate):
+| KB of GPU memory in use:     35228
+| KB of CPU memory in use:     14228
+
+--------------------------------------------------------------------------------
+   4.  RESULTS
+--------------------------------------------------------------------------------
+
+ ---------------------------------------------------
+ APPROXIMATING switch and d/dx switch using CUBIC SPLINE INTERPOLATION
+ using   5000.0 points per unit in tabled values
+ TESTING RELATIVE ERROR over r ranging from 0.0 to cutoff
+| CHECK switch(x): max rel err =   0.2738E-14   at   2.422500
+| CHECK d/dx switch(x): max rel err =   0.8987E-11   at   2.875760
+ ---------------------------------------------------
+|---------------------------------------------------
+| APPROXIMATING direct energy using CUBIC SPLINE INTERPOLATION
+|  with   50.0 points per unit in tabled values
+| Relative Error Limit not exceeded for r .gt.   2.52
+| APPROXIMATING direct force using CUBIC SPLINE INTERPOLATION
+|  with   50.0 points per unit in tabled values
+| Relative Error Limit not exceeded for r .gt.   2.92
+|---------------------------------------------------
+
+   KE Trans =     0.0163   KE Rot =     0.4628   C.O.M. Vel =    0.000627
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =     1000   TIME(PS) =      22.000  TEMP(K) =   302.25  PRESS =     0.0
+ Etot   =    -35137.6810  EKtot   =      8271.4688  EPtot      =    -43409.1497
+ BOND   =       161.4309  ANGLE   =       428.1428  DIHED      =       587.4436
+ 1-4 NB =       217.7090  1-4 EEL =      1788.1881  VDWAALS    =      5325.9972
+ EELEC  =    -51918.0615  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.4256   C.O.M. Vel =    0.000065
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =     2000   TIME(PS) =      24.000  TEMP(K) =   300.78  PRESS =     0.0
+ Etot   =    -35137.5668  EKtot   =      8231.3467  EPtot      =    -43368.9135
+ BOND   =       146.2071  ANGLE   =       420.0765  DIHED      =       603.0677
+ 1-4 NB =       211.2120  1-4 EEL =      1826.3325  VDWAALS    =      5157.0578
+ EELEC  =    -51732.8671  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     1.6752   C.O.M. Vel =    0.000101
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =     3000   TIME(PS) =      26.000  TEMP(K) =   301.10  PRESS =     0.0
+ Etot   =    -35136.6965  EKtot   =      8240.1553  EPtot      =    -43376.8518
+ BOND   =       171.3543  ANGLE   =       426.8439  DIHED      =       594.4517
+ 1-4 NB =       212.6640  1-4 EEL =      1815.0820  VDWAALS    =      5134.9739
+ EELEC  =    -51732.2215  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     3.5408   C.O.M. Vel =    0.000104
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =     4000   TIME(PS) =      28.000  TEMP(K) =   300.93  PRESS =     0.0
+ Etot   =    -35139.4503  EKtot   =      8235.4063  EPtot      =    -43374.8566
+ BOND   =       152.1866  ANGLE   =       422.7586  DIHED      =       604.8267
+ 1-4 NB =       197.5000  1-4 EEL =      1801.0532  VDWAALS    =      5201.4031
+ EELEC  =    -51754.5847  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.0676   C.O.M. Vel =    0.000097
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =     5000   TIME(PS) =      30.000  TEMP(K) =   299.78  PRESS =     0.0
+ Etot   =    -35141.9077  EKtot   =      8204.0645  EPtot      =    -43345.9722
+ BOND   =       179.8871  ANGLE   =       413.1217  DIHED      =       607.5919
+ 1-4 NB =       199.9916  1-4 EEL =      1748.7935  VDWAALS    =      5215.5134
+ EELEC  =    -51710.8713  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.3037   C.O.M. Vel =    0.000062
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =     6000   TIME(PS) =      32.000  TEMP(K) =   301.75  PRESS =     0.0
+ Etot   =    -35143.8997  EKtot   =      8257.7949  EPtot      =    -43401.6946
+ BOND   =       171.7579  ANGLE   =       416.2590  DIHED      =       602.5266
+ 1-4 NB =       203.8986  1-4 EEL =      1779.2425  VDWAALS    =      5053.0152
+ EELEC  =    -51628.3944  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     1.2967   C.O.M. Vel =    0.000036
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =     7000   TIME(PS) =      34.000  TEMP(K) =   298.83  PRESS =     0.0
+ Etot   =    -35143.5999  EKtot   =      8177.9053  EPtot      =    -43321.5052
+ BOND   =       181.4565  ANGLE   =       422.0441  DIHED      =       586.1705
+ 1-4 NB =       207.3336  1-4 EEL =      1781.1985  VDWAALS    =      5252.9071
+ EELEC  =    -51752.6156  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     0.1327   C.O.M. Vel =    0.000079
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =     8000   TIME(PS) =      36.000  TEMP(K) =   299.11  PRESS =     0.0
+ Etot   =    -35144.6740  EKtot   =      8185.6494  EPtot      =    -43330.3234
+ BOND   =       164.5777  ANGLE   =       448.1676  DIHED      =       590.8347
+ 1-4 NB =       202.1591  1-4 EEL =      1788.8630  VDWAALS    =      5053.6960
+ EELEC  =    -51578.6215  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.4758   C.O.M. Vel =    0.000094
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =     9000   TIME(PS) =      38.000  TEMP(K) =   297.62  PRESS =     0.0
+ Etot   =    -35143.1361  EKtot   =      8144.7339  EPtot      =    -43287.8700
+ BOND   =       185.9560  ANGLE   =       429.2801  DIHED      =       580.1553
+ 1-4 NB =       199.7747  1-4 EEL =      1755.4825  VDWAALS    =      5117.4501
+ EELEC  =    -51555.9687  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0000   KE Rot =     2.5466   C.O.M. Vel =    0.000017
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    10000   TIME(PS) =      40.000  TEMP(K) =   301.00  PRESS =     0.0
+ Etot   =    -35144.7226  EKtot   =      8237.3936  EPtot      =    -43382.1161
+ BOND   =       187.4664  ANGLE   =       397.8279  DIHED      =       615.7348
+ 1-4 NB =       205.4120  1-4 EEL =      1773.9559  VDWAALS    =      5184.7136
+ EELEC  =    -51747.2267  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     1.2059   C.O.M. Vel =    0.000049
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    11000   TIME(PS) =      42.000  TEMP(K) =   299.64  PRESS =     0.0
+ Etot   =    -35149.5692  EKtot   =      8200.1396  EPtot      =    -43349.7088
+ BOND   =       177.4519  ANGLE   =       413.9093  DIHED      =       585.9569
+ 1-4 NB =       196.9569  1-4 EEL =      1772.7516  VDWAALS    =      5247.8716
+ EELEC  =    -51744.6070  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.8966   C.O.M. Vel =    0.000045
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    12000   TIME(PS) =      44.000  TEMP(K) =   299.48  PRESS =     0.0
+ Etot   =    -35147.5103  EKtot   =      8195.7998  EPtot      =    -43343.3101
+ BOND   =       177.7979  ANGLE   =       454.7575  DIHED      =       600.3120
+ 1-4 NB =       213.2124  1-4 EEL =      1784.6519  VDWAALS    =      5175.1100
+ EELEC  =    -51749.1517  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     1.3861   C.O.M. Vel =    0.000058
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    13000   TIME(PS) =      46.000  TEMP(K) =   301.45  PRESS =     0.0
+ Etot   =    -35149.0099  EKtot   =      8249.5693  EPtot      =    -43398.5792
+ BOND   =       165.9013  ANGLE   =       424.5060  DIHED      =       589.7703
+ 1-4 NB =       204.7309  1-4 EEL =      1794.0217  VDWAALS    =      5282.9878
+ EELEC  =    -51860.4972  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     2.8294   C.O.M. Vel =    0.000069
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    14000   TIME(PS) =      48.000  TEMP(K) =   297.58  PRESS =     0.0
+ Etot   =    -35150.4706  EKtot   =      8143.8047  EPtot      =    -43294.2753
+ BOND   =       168.8501  ANGLE   =       428.4018  DIHED      =       596.5365
+ 1-4 NB =       207.9262  1-4 EEL =      1783.5661  VDWAALS    =      5262.3723
+ EELEC  =    -51741.9283  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     0.2618   C.O.M. Vel =    0.000088
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    15000   TIME(PS) =      50.000  TEMP(K) =   299.04  PRESS =     0.0
+ Etot   =    -35153.6639  EKtot   =      8183.7793  EPtot      =    -43337.4432
+ BOND   =       165.5354  ANGLE   =       434.0683  DIHED      =       591.4920
+ 1-4 NB =       207.1498  1-4 EEL =      1797.3081  VDWAALS    =      5197.2272
+ EELEC  =    -51730.2241  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     0.8084   C.O.M. Vel =    0.000084
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    16000   TIME(PS) =      52.000  TEMP(K) =   302.14  PRESS =     0.0
+ Etot   =    -35153.9925  EKtot   =      8268.6113  EPtot      =    -43422.6038
+ BOND   =       171.9290  ANGLE   =       412.5165  DIHED      =       601.5601
+ 1-4 NB =       210.8374  1-4 EEL =      1789.2033  VDWAALS    =      5081.4794
+ EELEC  =    -51690.1294  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.4214   C.O.M. Vel =    0.000104
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    17000   TIME(PS) =      54.000  TEMP(K) =   297.92  PRESS =     0.0
+ Etot   =    -35153.8365  EKtot   =      8152.9312  EPtot      =    -43306.7676
+ BOND   =       158.8515  ANGLE   =       411.6834  DIHED      =       614.2399
+ 1-4 NB =       203.4002  1-4 EEL =      1821.9433  VDWAALS    =      5295.1833
+ EELEC  =    -51812.0692  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0006   KE Rot =     1.7045   C.O.M. Vel =    0.000119
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    18000   TIME(PS) =      56.000  TEMP(K) =   297.91  PRESS =     0.0
+ Etot   =    -35154.9610  EKtot   =      8152.7324  EPtot      =    -43307.6934
+ BOND   =       182.5721  ANGLE   =       408.1508  DIHED      =       591.0642
+ 1-4 NB =       202.5601  1-4 EEL =      1786.8079  VDWAALS    =      5135.0468
+ EELEC  =    -51613.8953  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     1.5134   C.O.M. Vel =    0.000064
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    19000   TIME(PS) =      58.000  TEMP(K) =   300.05  PRESS =     0.0
+ Etot   =    -35157.5555  EKtot   =      8211.3809  EPtot      =    -43368.9363
+ BOND   =       175.8307  ANGLE   =       398.2643  DIHED      =       614.1731
+ 1-4 NB =       206.4623  1-4 EEL =      1803.1015  VDWAALS    =      5347.0641
+ EELEC  =    -51913.8324  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.5532   C.O.M. Vel =    0.000068
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    20000   TIME(PS) =      60.000  TEMP(K) =   298.53  PRESS =     0.0
+ Etot   =    -35157.7423  EKtot   =      8169.7480  EPtot      =    -43327.4903
+ BOND   =       169.0500  ANGLE   =       405.9111  DIHED      =       583.1075
+ 1-4 NB =       209.9241  1-4 EEL =      1814.8364  VDWAALS    =      5200.5470
+ EELEC  =    -51710.8664  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.3228   C.O.M. Vel =    0.000093
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    21000   TIME(PS) =      62.000  TEMP(K) =   302.32  PRESS =     0.0
+ Etot   =    -35159.1356  EKtot   =      8273.4531  EPtot      =    -43432.5888
+ BOND   =       171.2806  ANGLE   =       410.1909  DIHED      =       595.5726
+ 1-4 NB =       215.1287  1-4 EEL =      1782.3777  VDWAALS    =      5123.7501
+ EELEC  =    -51730.8894  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0009   KE Rot =     0.3530   C.O.M. Vel =    0.000145
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    22000   TIME(PS) =      64.000  TEMP(K) =   298.99  PRESS =     0.0
+ Etot   =    -35159.7071  EKtot   =      8182.2476  EPtot      =    -43341.9547
+ BOND   =       146.5281  ANGLE   =       429.8664  DIHED      =       602.6892
+ 1-4 NB =       206.5687  1-4 EEL =      1793.7549  VDWAALS    =      5130.8459
+ EELEC  =    -51652.2078  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     0.4776   C.O.M. Vel =    0.000081
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    23000   TIME(PS) =      66.000  TEMP(K) =   303.58  PRESS =     0.0
+ Etot   =    -35158.3252  EKtot   =      8307.8330  EPtot      =    -43466.1582
+ BOND   =       184.9195  ANGLE   =       417.5869  DIHED      =       611.3381
+ 1-4 NB =       205.5906  1-4 EEL =      1777.6205  VDWAALS    =      5313.1674
+ EELEC  =    -51976.3813  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     1.9839   C.O.M. Vel =    0.000075
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    24000   TIME(PS) =      68.000  TEMP(K) =   299.33  PRESS =     0.0
+ Etot   =    -35160.2111  EKtot   =      8191.6519  EPtot      =    -43351.8629
+ BOND   =       178.9862  ANGLE   =       427.1602  DIHED      =       601.6681
+ 1-4 NB =       212.0856  1-4 EEL =      1801.5545  VDWAALS    =      5111.5498
+ EELEC  =    -51684.8672  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0000   KE Rot =     0.0796   C.O.M. Vel =    0.000029
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    25000   TIME(PS) =      70.000  TEMP(K) =   294.80  PRESS =     0.0
+ Etot   =    -35160.2151  EKtot   =      8067.7656  EPtot      =    -43227.9807
+ BOND   =       199.3065  ANGLE   =       438.6281  DIHED      =       592.2195
+ 1-4 NB =       195.9913  1-4 EEL =      1756.5910  VDWAALS    =      5208.5937
+ EELEC  =    -51619.3108  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     2.5369   C.O.M. Vel =    0.000066
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    26000   TIME(PS) =      72.000  TEMP(K) =   298.73  PRESS =     0.0
+ Etot   =    -35162.7161  EKtot   =      8175.2378  EPtot      =    -43337.9539
+ BOND   =       173.5737  ANGLE   =       433.2320  DIHED      =       583.9427
+ 1-4 NB =       198.6226  1-4 EEL =      1788.8345  VDWAALS    =      5080.1743
+ EELEC  =    -51596.3336  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.3715   C.O.M. Vel =    0.000046
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    27000   TIME(PS) =      74.000  TEMP(K) =   300.79  PRESS =     0.0
+ Etot   =    -35164.1924  EKtot   =      8231.6250  EPtot      =    -43395.8174
+ BOND   =       155.5931  ANGLE   =       432.2813  DIHED      =       621.3908
+ 1-4 NB =       198.5049  1-4 EEL =      1772.7404  VDWAALS    =      5069.0836
+ EELEC  =    -51645.4114  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0005   KE Rot =     1.6782   C.O.M. Vel =    0.000107
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    28000   TIME(PS) =      76.000  TEMP(K) =   298.12  PRESS =     0.0
+ Etot   =    -35163.5566  EKtot   =      8158.4795  EPtot      =    -43322.0361
+ BOND   =       156.3622  ANGLE   =       462.2959  DIHED      =       597.0875
+ 1-4 NB =       205.0434  1-4 EEL =      1765.2209  VDWAALS    =      5141.8597
+ EELEC  =    -51649.9057  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0006   KE Rot =     0.7703   C.O.M. Vel =    0.000122
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    29000   TIME(PS) =      78.000  TEMP(K) =   301.37  PRESS =     0.0
+ Etot   =    -35168.2781  EKtot   =      8247.4238  EPtot      =    -43415.7020
+ BOND   =       166.6942  ANGLE   =       437.2158  DIHED      =       594.3059
+ 1-4 NB =       199.8716  1-4 EEL =      1778.4690  VDWAALS    =      5130.9767
+ EELEC  =    -51723.2351  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.9903   C.O.M. Vel =    0.000068
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    30000   TIME(PS) =      80.000  TEMP(K) =   301.95  PRESS =     0.0
+ Etot   =    -35167.7208  EKtot   =      8263.3867  EPtot      =    -43431.1075
+ BOND   =       154.5759  ANGLE   =       425.1939  DIHED      =       609.3494
+ 1-4 NB =       201.7870  1-4 EEL =      1768.4048  VDWAALS    =      5228.9870
+ EELEC  =    -51819.4055  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.8215   C.O.M. Vel =    0.000039
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    31000   TIME(PS) =      82.000  TEMP(K) =   298.59  PRESS =     0.0
+ Etot   =    -35168.2891  EKtot   =      8171.4058  EPtot      =    -43339.6949
+ BOND   =       170.3346  ANGLE   =       413.5632  DIHED      =       600.1689
+ 1-4 NB =       203.6348  1-4 EEL =      1799.7961  VDWAALS    =      5169.8979
+ EELEC  =    -51697.0904  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0007   KE Rot =     2.8591   C.O.M. Vel =    0.000129
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    32000   TIME(PS) =      84.000  TEMP(K) =   301.37  PRESS =     0.0
+ Etot   =    -35170.2316  EKtot   =      8247.4307  EPtot      =    -43417.6623
+ BOND   =       152.1363  ANGLE   =       429.5669  DIHED      =       617.9192
+ 1-4 NB =       200.2855  1-4 EEL =      1785.1460  VDWAALS    =      5179.0413
+ EELEC  =    -51781.7576  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0009   KE Rot =     1.2877   C.O.M. Vel =    0.000144
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    33000   TIME(PS) =      86.000  TEMP(K) =   298.88  PRESS =     0.0
+ Etot   =    -35172.2111  EKtot   =      8179.1992  EPtot      =    -43351.4103
+ BOND   =       192.3779  ANGLE   =       395.9000  DIHED      =       595.4395
+ 1-4 NB =       196.7393  1-4 EEL =      1758.6995  VDWAALS    =      5235.6709
+ EELEC  =    -51726.2376  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     1.0951   C.O.M. Vel =    0.000069
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    34000   TIME(PS) =      88.000  TEMP(K) =   302.30  PRESS =     0.0
+ Etot   =    -35174.3118  EKtot   =      8272.9033  EPtot      =    -43447.2151
+ BOND   =       165.2168  ANGLE   =       404.6893  DIHED      =       592.9764
+ 1-4 NB =       205.2033  1-4 EEL =      1781.9665  VDWAALS    =      5242.2014
+ EELEC  =    -51839.4687  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     1.3019   C.O.M. Vel =    0.000067
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    35000   TIME(PS) =      90.000  TEMP(K) =   304.51  PRESS =     0.0
+ Etot   =    -35175.2293  EKtot   =      8333.2822  EPtot      =    -43508.5115
+ BOND   =       162.2791  ANGLE   =       409.4842  DIHED      =       592.9432
+ 1-4 NB =       189.0610  1-4 EEL =      1768.3114  VDWAALS    =      5254.6679
+ EELEC  =    -51885.2583  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.4898   C.O.M. Vel =    0.000047
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    36000   TIME(PS) =      92.000  TEMP(K) =   296.42  PRESS =     0.0
+ Etot   =    -35174.8986  EKtot   =      8112.0317  EPtot      =    -43286.9303
+ BOND   =       179.6248  ANGLE   =       404.8876  DIHED      =       594.7419
+ 1-4 NB =       198.1124  1-4 EEL =      1747.3773  VDWAALS    =      5058.3112
+ EELEC  =    -51469.9857  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0012   KE Rot =     1.3270   C.O.M. Vel =    0.000173
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    37000   TIME(PS) =      94.000  TEMP(K) =   298.74  PRESS =     0.0
+ Etot   =    -35177.1341  EKtot   =      8175.4873  EPtot      =    -43352.6214
+ BOND   =       164.8208  ANGLE   =       409.6553  DIHED      =       604.6411
+ 1-4 NB =       195.8645  1-4 EEL =      1756.7881  VDWAALS    =      5243.4545
+ EELEC  =    -51727.8457  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     3.2416   C.O.M. Vel =    0.000058
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    38000   TIME(PS) =      96.000  TEMP(K) =   299.33  PRESS =     0.0
+ Etot   =    -35179.0435  EKtot   =      8191.5840  EPtot      =    -43370.6274
+ BOND   =       161.5295  ANGLE   =       403.2898  DIHED      =       589.1991
+ 1-4 NB =       207.0517  1-4 EEL =      1809.4838  VDWAALS    =      5039.6577
+ EELEC  =    -51580.8391  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0000   KE Rot =     0.1527   C.O.M. Vel =    0.000033
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    39000   TIME(PS) =      98.000  TEMP(K) =   299.40  PRESS =     0.0
+ Etot   =    -35180.9176  EKtot   =      8193.5918  EPtot      =    -43374.5094
+ BOND   =       193.7221  ANGLE   =       421.7554  DIHED      =       613.2577
+ 1-4 NB =       197.7662  1-4 EEL =      1769.2137  VDWAALS    =      5105.5107
+ EELEC  =    -51675.7354  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.6011   C.O.M. Vel =    0.000057
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    40000   TIME(PS) =     100.000  TEMP(K) =   298.15  PRESS =     0.0
+ Etot   =    -35179.8316  EKtot   =      8159.3076  EPtot      =    -43339.1392
+ BOND   =       172.8634  ANGLE   =       430.4226  DIHED      =       582.8738
+ 1-4 NB =       211.5835  1-4 EEL =      1789.3250  VDWAALS    =      5292.1000
+ EELEC  =    -51818.3075  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0005   KE Rot =     2.0853   C.O.M. Vel =    0.000115
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    41000   TIME(PS) =     102.000  TEMP(K) =   303.03  PRESS =     0.0
+ Etot   =    -35181.4953  EKtot   =      8292.9375  EPtot      =    -43474.4328
+ BOND   =       166.6588  ANGLE   =       443.3347  DIHED      =       604.5400
+ 1-4 NB =       199.2520  1-4 EEL =      1773.6973  VDWAALS    =      5131.0866
+ EELEC  =    -51793.0022  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     1.1104   C.O.M. Vel =    0.000055
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    42000   TIME(PS) =     104.000  TEMP(K) =   297.08  PRESS =     0.0
+ Etot   =    -35183.2952  EKtot   =      8129.9468  EPtot      =    -43313.2420
+ BOND   =       186.6665  ANGLE   =       414.8206  DIHED      =       609.8426
+ 1-4 NB =       207.5151  1-4 EEL =      1754.4463  VDWAALS    =      5100.3937
+ EELEC  =    -51586.9268  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.8081   C.O.M. Vel =    0.000066
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    43000   TIME(PS) =     106.000  TEMP(K) =   300.13  PRESS =     0.0
+ Etot   =    -35185.9287  EKtot   =      8213.6563  EPtot      =    -43399.5849
+ BOND   =       185.8650  ANGLE   =       410.7362  DIHED      =       608.6603
+ 1-4 NB =       202.7208  1-4 EEL =      1782.2318  VDWAALS    =      5126.4097
+ EELEC  =    -51716.2087  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0000   KE Rot =     1.3511   C.O.M. Vel =    0.000034
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    44000   TIME(PS) =     108.000  TEMP(K) =   300.22  PRESS =     0.0
+ Etot   =    -35184.8343  EKtot   =      8216.0361  EPtot      =    -43400.8704
+ BOND   =       179.0308  ANGLE   =       427.5807  DIHED      =       588.9736
+ 1-4 NB =       199.7921  1-4 EEL =      1774.4700  VDWAALS    =      5249.5327
+ EELEC  =    -51820.2503  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.4245   C.O.M. Vel =    0.000097
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    45000   TIME(PS) =     110.000  TEMP(K) =   302.80  PRESS =     0.0
+ Etot   =    -35187.7560  EKtot   =      8286.4854  EPtot      =    -43474.2414
+ BOND   =       176.8264  ANGLE   =       414.5970  DIHED      =       617.3470
+ 1-4 NB =       189.4527  1-4 EEL =      1759.0808  VDWAALS    =      5107.8057
+ EELEC  =    -51739.3509  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0000   KE Rot =     0.3858   C.O.M. Vel =    0.000032
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    46000   TIME(PS) =     112.000  TEMP(K) =   300.51  PRESS =     0.0
+ Etot   =    -35187.4726  EKtot   =      8223.9258  EPtot      =    -43411.3984
+ BOND   =       180.9016  ANGLE   =       408.1954  DIHED      =       601.1055
+ 1-4 NB =       201.7690  1-4 EEL =      1775.6961  VDWAALS    =      5138.4205
+ EELEC  =    -51717.4865  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.0345   C.O.M. Vel =    0.000075
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    47000   TIME(PS) =     114.000  TEMP(K) =   300.96  PRESS =     0.0
+ Etot   =    -35189.2081  EKtot   =      8236.1709  EPtot      =    -43425.3790
+ BOND   =       164.2330  ANGLE   =       410.4920  DIHED      =       598.5994
+ 1-4 NB =       205.7768  1-4 EEL =      1767.2282  VDWAALS    =      5267.9034
+ EELEC  =    -51839.6118  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.2134   C.O.M. Vel =    0.000040
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    48000   TIME(PS) =     116.000  TEMP(K) =   300.36  PRESS =     0.0
+ Etot   =    -35185.9459  EKtot   =      8219.8545  EPtot      =    -43405.8004
+ BOND   =       176.7617  ANGLE   =       422.1624  DIHED      =       593.2488
+ 1-4 NB =       200.8315  1-4 EEL =      1794.2289  VDWAALS    =      5261.4041
+ EELEC  =    -51854.4378  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.8990   C.O.M. Vel =    0.000093
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    49000   TIME(PS) =     118.000  TEMP(K) =   302.60  PRESS =     0.0
+ Etot   =    -35188.4320  EKtot   =      8281.2334  EPtot      =    -43469.6654
+ BOND   =       173.2562  ANGLE   =       431.5571  DIHED      =       593.1919
+ 1-4 NB =       205.9169  1-4 EEL =      1760.3155  VDWAALS    =      5212.2002
+ EELEC  =    -51846.1032  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.0596   C.O.M. Vel =    0.000092
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    50000   TIME(PS) =     120.000  TEMP(K) =   299.94  PRESS =     0.0
+ Etot   =    -35187.3205  EKtot   =      8208.4053  EPtot      =    -43395.7258
+ BOND   =       196.5117  ANGLE   =       431.5342  DIHED      =       610.7068
+ 1-4 NB =       211.4294  1-4 EEL =      1775.3557  VDWAALS    =      5161.1099
+ EELEC  =    -51782.3735  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     0.2114   C.O.M. Vel =    0.000081
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    51000   TIME(PS) =     122.000  TEMP(K) =   304.45  PRESS =     0.0
+ Etot   =    -35190.7653  EKtot   =      8331.6836  EPtot      =    -43522.4489
+ BOND   =       160.7739  ANGLE   =       472.0579  DIHED      =       606.0877
+ 1-4 NB =       195.2365  1-4 EEL =      1758.8990  VDWAALS    =      5259.9175
+ EELEC  =    -51975.4212  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.1330   C.O.M. Vel =    0.000051
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    52000   TIME(PS) =     124.000  TEMP(K) =   297.98  PRESS =     0.0
+ Etot   =    -35189.9034  EKtot   =      8154.7813  EPtot      =    -43344.6847
+ BOND   =       166.6796  ANGLE   =       427.1587  DIHED      =       605.3006
+ 1-4 NB =       216.0714  1-4 EEL =      1819.0355  VDWAALS    =      5284.2932
+ EELEC  =    -51863.2238  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.2094   C.O.M. Vel =    0.000070
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    53000   TIME(PS) =     126.000  TEMP(K) =   297.63  PRESS =     0.0
+ Etot   =    -35188.5807  EKtot   =      8145.0376  EPtot      =    -43333.6183
+ BOND   =       197.6593  ANGLE   =       438.7263  DIHED      =       607.2066
+ 1-4 NB =       196.8707  1-4 EEL =      1763.1035  VDWAALS    =      5016.4169
+ EELEC  =    -51553.6016  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.5109   C.O.M. Vel =    0.000035
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    54000   TIME(PS) =     128.000  TEMP(K) =   295.66  PRESS =     0.0
+ Etot   =    -35190.5030  EKtot   =      8091.2090  EPtot      =    -43281.7120
+ BOND   =       168.6981  ANGLE   =       401.4140  DIHED      =       624.5879
+ 1-4 NB =       212.4786  1-4 EEL =      1786.0043  VDWAALS    =      5111.5562
+ EELEC  =    -51586.4512  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.7876   C.O.M. Vel =    0.000063
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    55000   TIME(PS) =     130.000  TEMP(K) =   301.53  PRESS =     0.0
+ Etot   =    -35190.2752  EKtot   =      8251.9023  EPtot      =    -43442.1776
+ BOND   =       169.8681  ANGLE   =       438.2039  DIHED      =       599.8588
+ 1-4 NB =       203.2861  1-4 EEL =      1779.8776  VDWAALS    =      5189.4123
+ EELEC  =    -51822.6843  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     2.3375   C.O.M. Vel =    0.000087
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    56000   TIME(PS) =     132.000  TEMP(K) =   300.13  PRESS =     0.0
+ Etot   =    -35193.4068  EKtot   =      8213.5898  EPtot      =    -43406.9967
+ BOND   =       174.8759  ANGLE   =       410.8566  DIHED      =       588.4769
+ 1-4 NB =       206.4028  1-4 EEL =      1791.4532  VDWAALS    =      5229.0437
+ EELEC  =    -51808.1056  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.4479   C.O.M. Vel =    0.000073
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    57000   TIME(PS) =     134.000  TEMP(K) =   300.81  PRESS =     0.0
+ Etot   =    -35192.1193  EKtot   =      8232.2021  EPtot      =    -43424.3215
+ BOND   =       174.3809  ANGLE   =       454.2774  DIHED      =       598.1332
+ 1-4 NB =       205.3366  1-4 EEL =      1761.9758  VDWAALS    =      5182.1976
+ EELEC  =    -51800.6230  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.2590   C.O.M. Vel =    0.000101
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    58000   TIME(PS) =     136.000  TEMP(K) =   298.57  PRESS =     0.0
+ Etot   =    -35191.5085  EKtot   =      8170.9116  EPtot      =    -43362.4201
+ BOND   =       169.8946  ANGLE   =       441.9376  DIHED      =       604.9916
+ 1-4 NB =       202.0209  1-4 EEL =      1801.8149  VDWAALS    =      5200.4542
+ EELEC  =    -51783.5340  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     0.3231   C.O.M. Vel =    0.000091
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    59000   TIME(PS) =     138.000  TEMP(K) =   300.56  PRESS =     0.0
+ Etot   =    -35195.6322  EKtot   =      8225.3984  EPtot      =    -43421.0307
+ BOND   =       160.2869  ANGLE   =       420.7275  DIHED      =       606.1560
+ 1-4 NB =       202.2276  1-4 EEL =      1770.4407  VDWAALS    =      5218.5322
+ EELEC  =    -51799.4015  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.2047   C.O.M. Vel =    0.000074
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    60000   TIME(PS) =     140.000  TEMP(K) =   298.80  PRESS =     0.0
+ Etot   =    -35194.5046  EKtot   =      8177.1729  EPtot      =    -43371.6774
+ BOND   =       180.2011  ANGLE   =       423.2976  DIHED      =       607.5711
+ 1-4 NB =       198.2947  1-4 EEL =      1797.1239  VDWAALS    =      5201.7724
+ EELEC  =    -51779.9382  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.1000   C.O.M. Vel =    0.000102
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    61000   TIME(PS) =     142.000  TEMP(K) =   300.76  PRESS =     0.0
+ Etot   =    -35195.2190  EKtot   =      8230.7061  EPtot      =    -43425.9251
+ BOND   =       190.8096  ANGLE   =       431.7538  DIHED      =       582.7116
+ 1-4 NB =       191.4459  1-4 EEL =      1774.3458  VDWAALS    =      5350.1451
+ EELEC  =    -51947.1369  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     2.5908   C.O.M. Vel =    0.000066
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    62000   TIME(PS) =     144.000  TEMP(K) =   294.39  PRESS =     0.0
+ Etot   =    -35192.9283  EKtot   =      8056.4805  EPtot      =    -43249.4087
+ BOND   =       184.9425  ANGLE   =       447.0148  DIHED      =       599.2146
+ 1-4 NB =       206.4588  1-4 EEL =      1749.8086  VDWAALS    =      5100.0970
+ EELEC  =    -51536.9450  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     0.7869   C.O.M. Vel =    0.000083
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    63000   TIME(PS) =     146.000  TEMP(K) =   301.10  PRESS =     0.0
+ Etot   =    -35197.9240  EKtot   =      8240.1172  EPtot      =    -43438.0412
+ BOND   =       190.7684  ANGLE   =       405.7291  DIHED      =       602.9915
+ 1-4 NB =       193.6213  1-4 EEL =      1777.2497  VDWAALS    =      5253.1888
+ EELEC  =    -51861.5901  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.8984   C.O.M. Vel =    0.000059
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    64000   TIME(PS) =     148.000  TEMP(K) =   298.11  PRESS =     0.0
+ Etot   =    -35198.1806  EKtot   =      8158.1255  EPtot      =    -43356.3061
+ BOND   =       173.6437  ANGLE   =       445.8234  DIHED      =       617.2145
+ 1-4 NB =       210.8198  1-4 EEL =      1801.8835  VDWAALS    =      5383.8738
+ EELEC  =    -51989.5648  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     1.1306   C.O.M. Vel =    0.000084
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    65000   TIME(PS) =     150.000  TEMP(K) =   298.83  PRESS =     0.0
+ Etot   =    -35201.4761  EKtot   =      8177.8853  EPtot      =    -43379.3614
+ BOND   =       161.4579  ANGLE   =       430.8189  DIHED      =       593.4178
+ 1-4 NB =       203.5325  1-4 EEL =      1806.0701  VDWAALS    =      5067.7728
+ EELEC  =    -51642.4315  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.4423   C.O.M. Vel =    0.000056
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    66000   TIME(PS) =     152.000  TEMP(K) =   299.81  PRESS =     0.0
+ Etot   =    -35201.2133  EKtot   =      8204.7705  EPtot      =    -43405.9838
+ BOND   =       181.6901  ANGLE   =       428.8818  DIHED      =       589.4384
+ 1-4 NB =       215.4620  1-4 EEL =      1767.7315  VDWAALS    =      5243.5603
+ EELEC  =    -51832.7479  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     1.4281   C.O.M. Vel =    0.000039
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    67000   TIME(PS) =     154.000  TEMP(K) =   304.24  PRESS =     0.0
+ Etot   =    -35200.7654  EKtot   =      8325.9619  EPtot      =    -43526.7273
+ BOND   =       164.2294  ANGLE   =       428.2756  DIHED      =       608.1108
+ 1-4 NB =       196.4308  1-4 EEL =      1766.2192  VDWAALS    =      5315.8148
+ EELEC  =    -52005.8080  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.2204   C.O.M. Vel =    0.000057
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    68000   TIME(PS) =     156.000  TEMP(K) =   297.98  PRESS =     0.0
+ Etot   =    -35200.7737  EKtot   =      8154.7612  EPtot      =    -43355.5349
+ BOND   =       169.8584  ANGLE   =       418.8394  DIHED      =       601.9103
+ 1-4 NB =       197.9283  1-4 EEL =      1753.3518  VDWAALS    =      5088.7180
+ EELEC  =    -51586.1412  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     3.1672   C.O.M. Vel =    0.000054
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    69000   TIME(PS) =     158.000  TEMP(K) =   299.94  PRESS =     0.0
+ Etot   =    -35201.3740  EKtot   =      8208.2705  EPtot      =    -43409.6445
+ BOND   =       175.1668  ANGLE   =       424.7503  DIHED      =       606.1476
+ 1-4 NB =       203.7462  1-4 EEL =      1766.1457  VDWAALS    =      5225.1232
+ EELEC  =    -51810.7245  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0000   KE Rot =     1.3291   C.O.M. Vel =    0.000030
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    70000   TIME(PS) =     160.000  TEMP(K) =   298.91  PRESS =     0.0
+ Etot   =    -35203.7115  EKtot   =      8180.2129  EPtot      =    -43383.9244
+ BOND   =       177.8282  ANGLE   =       422.7222  DIHED      =       610.6372
+ 1-4 NB =       194.0559  1-4 EEL =      1761.6693  VDWAALS    =      5214.0202
+ EELEC  =    -51764.8574  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.5110   C.O.M. Vel =    0.000076
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    71000   TIME(PS) =     162.000  TEMP(K) =   299.28  PRESS =     0.0
+ Etot   =    -35207.7419  EKtot   =      8190.2925  EPtot      =    -43398.0344
+ BOND   =       184.7398  ANGLE   =       409.0624  DIHED      =       598.7962
+ 1-4 NB =       211.6631  1-4 EEL =      1786.1239  VDWAALS    =      5035.8046
+ EELEC  =    -51624.2244  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0010   KE Rot =     0.9018   C.O.M. Vel =    0.000154
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    72000   TIME(PS) =     164.000  TEMP(K) =   301.32  PRESS =     0.0
+ Etot   =    -35207.1172  EKtot   =      8246.2168  EPtot      =    -43453.3340
+ BOND   =       160.2485  ANGLE   =       428.6942  DIHED      =       586.2461
+ 1-4 NB =       202.3272  1-4 EEL =      1781.8460  VDWAALS    =      5063.3606
+ EELEC  =    -51676.0567  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0011   KE Rot =     1.6710   C.O.M. Vel =    0.000166
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    73000   TIME(PS) =     166.000  TEMP(K) =   297.54  PRESS =     0.0
+ Etot   =    -35208.1764  EKtot   =      8142.7432  EPtot      =    -43350.9196
+ BOND   =       195.4720  ANGLE   =       449.3590  DIHED      =       607.1606
+ 1-4 NB =       210.7095  1-4 EEL =      1741.3849  VDWAALS    =      5261.5779
+ EELEC  =    -51816.5834  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0005   KE Rot =     2.6178   C.O.M. Vel =    0.000113
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    74000   TIME(PS) =     168.000  TEMP(K) =   302.62  PRESS =     0.0
+ Etot   =    -35208.5793  EKtot   =      8281.6875  EPtot      =    -43490.2668
+ BOND   =       178.5430  ANGLE   =       423.8268  DIHED      =       596.8111
+ 1-4 NB =       207.1034  1-4 EEL =      1782.3719  VDWAALS    =      5118.3458
+ EELEC  =    -51797.2688  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.1641   C.O.M. Vel =    0.000095
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    75000   TIME(PS) =     170.000  TEMP(K) =   298.51  PRESS =     0.0
+ Etot   =    -35212.4496  EKtot   =      8169.2466  EPtot      =    -43381.6962
+ BOND   =       177.0338  ANGLE   =       399.0517  DIHED      =       598.9962
+ 1-4 NB =       205.9835  1-4 EEL =      1795.0428  VDWAALS    =      5171.2161
+ EELEC  =    -51729.0203  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0008   KE Rot =     0.3537   C.O.M. Vel =    0.000142
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    76000   TIME(PS) =     172.000  TEMP(K) =   296.02  PRESS =     0.0
+ Etot   =    -35210.8677  EKtot   =      8100.9888  EPtot      =    -43311.8564
+ BOND   =       185.2186  ANGLE   =       422.8264  DIHED      =       606.6844
+ 1-4 NB =       206.6351  1-4 EEL =      1786.7808  VDWAALS    =      5263.1005
+ EELEC  =    -51783.1023  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     1.0697   C.O.M. Vel =    0.000070
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    77000   TIME(PS) =     174.000  TEMP(K) =   300.68  PRESS =     0.0
+ Etot   =    -35214.1842  EKtot   =      8228.4824  EPtot      =    -43442.6666
+ BOND   =       169.1699  ANGLE   =       411.3533  DIHED      =       591.6964
+ 1-4 NB =       206.9085  1-4 EEL =      1807.7057  VDWAALS    =      5209.2133
+ EELEC  =    -51838.7137  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.6297   C.O.M. Vel =    0.000039
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    78000   TIME(PS) =     176.000  TEMP(K) =   303.07  PRESS =     0.0
+ Etot   =    -35214.3823  EKtot   =      8294.0430  EPtot      =    -43508.4252
+ BOND   =       191.3244  ANGLE   =       413.0947  DIHED      =       602.2472
+ 1-4 NB =       195.4540  1-4 EEL =      1782.4208  VDWAALS    =      5238.0911
+ EELEC  =    -51931.0574  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     1.0267   C.O.M. Vel =    0.000091
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    79000   TIME(PS) =     178.000  TEMP(K) =   299.19  PRESS =     0.0
+ Etot   =    -35214.0013  EKtot   =      8187.6812  EPtot      =    -43401.6825
+ BOND   =       181.6410  ANGLE   =       413.1465  DIHED      =       601.3041
+ 1-4 NB =       190.0347  1-4 EEL =      1804.4864  VDWAALS    =      5234.5338
+ EELEC  =    -51826.8288  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.4130   C.O.M. Vel =    0.000074
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    80000   TIME(PS) =     180.000  TEMP(K) =   299.51  PRESS =     0.0
+ Etot   =    -35214.5361  EKtot   =      8196.6143  EPtot      =    -43411.1504
+ BOND   =       181.0040  ANGLE   =       453.3805  DIHED      =       607.1064
+ 1-4 NB =       207.5497  1-4 EEL =      1752.7704  VDWAALS    =      5175.3454
+ EELEC  =    -51788.3068  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0009   KE Rot =     1.6280   C.O.M. Vel =    0.000145
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    81000   TIME(PS) =     182.000  TEMP(K) =   298.04  PRESS =     0.0
+ Etot   =    -35216.2673  EKtot   =      8156.2563  EPtot      =    -43372.5236
+ BOND   =       190.0255  ANGLE   =       414.2554  DIHED      =       596.2708
+ 1-4 NB =       203.4111  1-4 EEL =      1765.9267  VDWAALS    =      5275.7553
+ EELEC  =    -51818.1684  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.4839   C.O.M. Vel =    0.000072
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    82000   TIME(PS) =     184.000  TEMP(K) =   301.14  PRESS =     0.0
+ Etot   =    -35219.1995  EKtot   =      8241.3066  EPtot      =    -43460.5061
+ BOND   =       186.3912  ANGLE   =       425.9550  DIHED      =       592.3969
+ 1-4 NB =       201.4200  1-4 EEL =      1779.9229  VDWAALS    =      5314.5947
+ EELEC  =    -51961.1869  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.5381   C.O.M. Vel =    0.000050
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    83000   TIME(PS) =     186.000  TEMP(K) =   300.40  PRESS =     0.0
+ Etot   =    -35218.5158  EKtot   =      8221.0635  EPtot      =    -43439.5793
+ BOND   =       176.5675  ANGLE   =       472.0463  DIHED      =       606.2593
+ 1-4 NB =       200.8472  1-4 EEL =      1771.7796  VDWAALS    =      5064.9200
+ EELEC  =    -51731.9992  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     1.4318   C.O.M. Vel =    0.000077
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    84000   TIME(PS) =     188.000  TEMP(K) =   299.45  PRESS =     0.0
+ Etot   =    -35217.2390  EKtot   =      8194.9170  EPtot      =    -43412.1560
+ BOND   =       224.1253  ANGLE   =       435.9274  DIHED      =       605.6339
+ 1-4 NB =       188.5861  1-4 EEL =      1780.2620  VDWAALS    =      5011.5758
+ EELEC  =    -51658.2665  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.3427   C.O.M. Vel =    0.000068
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    85000   TIME(PS) =     190.000  TEMP(K) =   299.49  PRESS =     0.0
+ Etot   =    -35220.4082  EKtot   =      8196.1543  EPtot      =    -43416.5625
+ BOND   =       186.8097  ANGLE   =       454.4780  DIHED      =       597.5124
+ 1-4 NB =       201.0216  1-4 EEL =      1798.1163  VDWAALS    =      5073.6009
+ EELEC  =    -51728.1014  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0002   KE Rot =     0.7555   C.O.M. Vel =    0.000065
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    86000   TIME(PS) =     192.000  TEMP(K) =   299.12  PRESS =     0.0
+ Etot   =    -35219.6683  EKtot   =      8186.0332  EPtot      =    -43405.7015
+ BOND   =       188.3700  ANGLE   =       446.2232  DIHED      =       606.4088
+ 1-4 NB =       206.6142  1-4 EEL =      1776.8904  VDWAALS    =      5121.1188
+ EELEC  =    -51751.3269  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     0.1959   C.O.M. Vel =    0.000086
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    87000   TIME(PS) =     194.000  TEMP(K) =   305.34  PRESS =     0.0
+ Etot   =    -35221.6256  EKtot   =      8356.1514  EPtot      =    -43577.7770
+ BOND   =       200.6829  ANGLE   =       433.0756  DIHED      =       595.6250
+ 1-4 NB =       205.5327  1-4 EEL =      1767.5158  VDWAALS    =      5252.2984
+ EELEC  =    -52032.5072  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0006   KE Rot =     0.5019   C.O.M. Vel =    0.000118
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    88000   TIME(PS) =     196.000  TEMP(K) =   298.25  PRESS =     0.0
+ Etot   =    -35222.0817  EKtot   =      8162.2202  EPtot      =    -43384.3019
+ BOND   =       172.5473  ANGLE   =       432.8674  DIHED      =       613.4346
+ 1-4 NB =       203.0008  1-4 EEL =      1806.0789  VDWAALS    =      5239.4186
+ EELEC  =    -51851.6497  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.6535   C.O.M. Vel =    0.000047
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    89000   TIME(PS) =     198.000  TEMP(K) =   299.30  PRESS =     0.0
+ Etot   =    -35220.3464  EKtot   =      8190.8848  EPtot      =    -43411.2312
+ BOND   =       196.7147  ANGLE   =       451.9997  DIHED      =       597.2858
+ 1-4 NB =       195.8688  1-4 EEL =      1772.5213  VDWAALS    =      5259.9247
+ EELEC  =    -51885.5462  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0003   KE Rot =     1.8784   C.O.M. Vel =    0.000087
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    90000   TIME(PS) =     200.000  TEMP(K) =   301.37  PRESS =     0.0
+ Etot   =    -35222.6236  EKtot   =      8247.5576  EPtot      =    -43470.1812
+ BOND   =       183.7112  ANGLE   =       426.5402  DIHED      =       605.3671
+ 1-4 NB =       206.8493  1-4 EEL =      1767.6925  VDWAALS    =      5212.8003
+ EELEC  =    -51873.1419  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     1.2484   C.O.M. Vel =    0.000044
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    91000   TIME(PS) =     202.000  TEMP(K) =   298.68  PRESS =     0.0
+ Etot   =    -35224.1830  EKtot   =      8173.9312  EPtot      =    -43398.1141
+ BOND   =       174.5931  ANGLE   =       426.7134  DIHED      =       591.6785
+ 1-4 NB =       202.0423  1-4 EEL =      1776.0119  VDWAALS    =      5351.3892
+ EELEC  =    -51920.5425  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0004   KE Rot =     0.1444   C.O.M. Vel =    0.000096
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    92000   TIME(PS) =     204.000  TEMP(K) =   299.09  PRESS =     0.0
+ Etot   =    -35224.8746  EKtot   =      8185.1597  EPtot      =    -43410.0343
+ BOND   =       167.1625  ANGLE   =       458.5411  DIHED      =       602.2654
+ 1-4 NB =       196.0916  1-4 EEL =      1757.8389  VDWAALS    =      5230.4091
+ EELEC  =    -51822.3429  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     1.0666   C.O.M. Vel =    0.000052
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    93000   TIME(PS) =     206.000  TEMP(K) =   303.99  PRESS =     0.0
+ Etot   =    -35225.7297  EKtot   =      8319.2822  EPtot      =    -43545.0120
+ BOND   =       172.3908  ANGLE   =       409.4758  DIHED      =       597.5629
+ 1-4 NB =       205.9064  1-4 EEL =      1774.3004  VDWAALS    =      5175.7298
+ EELEC  =    -51880.3780  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.6356   C.O.M. Vel =    0.000044
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    94000   TIME(PS) =     208.000  TEMP(K) =   298.09  PRESS =     0.0
+ Etot   =    -35225.9085  EKtot   =      8157.5781  EPtot      =    -43383.4866
+ BOND   =       186.4309  ANGLE   =       426.6337  DIHED      =       595.6323
+ 1-4 NB =       203.4376  1-4 EEL =      1751.1344  VDWAALS    =      5042.0296
+ EELEC  =    -51588.7852  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0005   KE Rot =     1.5195   C.O.M. Vel =    0.000113
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    95000   TIME(PS) =     210.000  TEMP(K) =   298.79  PRESS =     0.0
+ Etot   =    -35225.5001  EKtot   =      8176.8828  EPtot      =    -43402.3830
+ BOND   =       173.6566  ANGLE   =       421.7250  DIHED      =       599.5455
+ 1-4 NB =       201.8234  1-4 EEL =      1778.0861  VDWAALS    =      5209.4245
+ EELEC  =    -51786.6440  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.1375   C.O.M. Vel =    0.000040
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    96000   TIME(PS) =     212.000  TEMP(K) =   300.37  PRESS =     0.0
+ Etot   =    -35229.5282  EKtot   =      8219.9756  EPtot      =    -43449.5038
+ BOND   =       174.5011  ANGLE   =       402.5454  DIHED      =       603.9432
+ 1-4 NB =       201.4059  1-4 EEL =      1781.6690  VDWAALS    =      5027.0964
+ EELEC  =    -51640.6648  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.4228   C.O.M. Vel =    0.000048
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    97000   TIME(PS) =     214.000  TEMP(K) =   296.60  PRESS =     0.0
+ Etot   =    -35226.4659  EKtot   =      8116.9214  EPtot      =    -43343.3873
+ BOND   =       156.4926  ANGLE   =       426.5711  DIHED      =       595.2531
+ 1-4 NB =       198.0025  1-4 EEL =      1780.3687  VDWAALS    =      5185.8610
+ EELEC  =    -51685.9363  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     0.7751   C.O.M. Vel =    0.000044
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    98000   TIME(PS) =     216.000  TEMP(K) =   299.26  PRESS =     0.0
+ Etot   =    -35229.8055  EKtot   =      8189.6343  EPtot      =    -43419.4398
+ BOND   =       174.1398  ANGLE   =       408.0826  DIHED      =       586.4167
+ 1-4 NB =       192.4230  1-4 EEL =      1748.4160  VDWAALS    =      5222.9868
+ EELEC  =    -51751.9045  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0005   KE Rot =     0.0852   C.O.M. Vel =    0.000115
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =    99000   TIME(PS) =     218.000  TEMP(K) =   297.78  PRESS =     0.0
+ Etot   =    -35229.6810  EKtot   =      8149.1494  EPtot      =    -43378.8304
+ BOND   =       167.0964  ANGLE   =       406.9182  DIHED      =       599.3790
+ 1-4 NB =       205.4187  1-4 EEL =      1767.4028  VDWAALS    =      5135.5543
+ EELEC  =    -51660.5998  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+   KE Trans =     0.0001   KE Rot =     3.2687   C.O.M. Vel =    0.000037
+
+   Translational and rotational motion removed
+
+   KE Trans =     0.0000   KE Rot =     0.0000   C.O.M. Vel =    0.000000
+
+ NSTEP =   100000   TIME(PS) =     220.000  TEMP(K) =   297.62  PRESS =     0.0
+ Etot   =    -35227.7273  EKtot   =      8144.7188  EPtot      =    -43372.4461
+ BOND   =       188.8607  ANGLE   =       432.7150  DIHED      =       585.2063
+ 1-4 NB =       205.2876  1-4 EEL =      1763.1492  VDWAALS    =      5173.9316
+ EELEC  =    -51721.5965  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+      A V E R A G E S   O V E R     100 S T E P S
+
+
+ NSTEP =   100000   TIME(PS) =     220.000  TEMP(K) =   299.82  PRESS =     0.0
+ Etot   =    -35186.6967  EKtot   =      8205.1335  EPtot      =    -43391.8302
+ BOND   =       175.4487  ANGLE   =       425.1892  DIHED      =       599.9125
+ 1-4 NB =       203.1085  1-4 EEL =      1779.1503  VDWAALS    =      5185.2430
+ EELEC  =    -51759.8824  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+      R M S  F L U C T U A T I O N S
+
+
+ NSTEP =   100000   TIME(PS) =     220.000  TEMP(K) =     2.07  PRESS =     0.0
+ Etot   =        27.4058  EKtot   =        56.7620  EPtot      =        61.4932
+ BOND   =        12.8369  ANGLE   =        16.3092  DIHED      =         9.3118
+ 1-4 NB =         6.1800  1-4 EEL =        18.0999  VDWAALS    =        85.2109
+ EELEC  =       113.6615  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+|E(PBS) =        27.7952
+ ------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+   5.  TIMINGS
+--------------------------------------------------------------------------------
+
+|  NonSetup CPU Time in Major Routines:
+|
+|     Routine           Sec        %
+|     ------------------------------
+|     Nonbond          17.47    8.49
+|     Bond              0.00    0.00
+|     Angle             0.00    0.00
+|     Dihedral          0.00    0.00
+|     Shake             1.01    0.49
+|     RunMD           187.17   90.97
+|     Other             0.10    0.05
+|     ------------------------------
+|     Total           205.75
+
+|  PME Nonbond Pairlist CPU Time:
+|
+|     Routine              Sec        %
+|     ---------------------------------
+|     Set Up Cit           0.00    0.00
+|     Build List           0.00    0.00
+|     ---------------------------------
+|     Total                0.00    0.00
+
+|  PME Direct Force CPU Time:
+|
+|     Routine              Sec        %
+|     ---------------------------------
+|     NonBonded Calc       0.00    0.00
+|     Exclude Masked       0.00    0.00
+|     Other                0.08    0.04
+|     ---------------------------------
+|     Total                0.08    0.04
+
+|  PME Reciprocal Force CPU Time:
+|
+|     Routine              Sec        %
+|     ---------------------------------
+|     1D bspline           0.00    0.00
+|     Grid Charges         0.00    0.00
+|     Scalar Sum           0.00    0.00
+|     Gradient Sum         0.00    0.00
+|     FFT                  0.00    0.00
+|     ---------------------------------
+|     Total                0.00    0.00
+
+|  Final Performance Info:
+|     -----------------------------------------------------
+|     Average timings for last   11000 steps:
+|         Elapsed(s) =      23.07 Per Step(ms) =       2.10
+|             ns/day =      82.40   seconds/ns =    1048.53
+|
+|     Average timings for all steps:
+|         Elapsed(s) =     206.94 Per Step(ms) =       2.07
+|             ns/day =      83.50   seconds/ns =    1034.69
+|     -----------------------------------------------------
+
+|  Setup CPU time:            6.94 seconds
+|  NonSetup CPU time:       205.75 seconds
+|  Total CPU time:          212.69 seconds     0.06 hours
+
+|  Setup wall time:           8    seconds
+|  NonSetup wall time:      207    seconds
+|  Total wall time:         215    seconds     0.06 hours

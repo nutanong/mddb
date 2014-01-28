@@ -1,0 +1,12 @@
+source leaprc.ff10
+loadamberparams ions94.lib
+loadamberparams frcmod.ionsjc_tip4pew
+loadamberparams solvents.lib
+loadAmberParams frcmod.tip4pew
+bpti = loadpdb bpti_CYS_CYX_CL_changes.pdb 
+WAT=T4E
+bond bpti.5.SG bpti.55.SG
+bond bpti.14.SG bpti.38.SG
+bond bpti.30.SG bpti.51.SG
+saveamberparm bpti bpti_chk.parm bpti_chk.rst
+quit
