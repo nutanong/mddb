@@ -5,7 +5,6 @@ import StringIO
 
 import datetime, time
 
-import xml.etree.ElementTree as ET
 import subprocess
 import os
 import sys
@@ -120,18 +119,6 @@ class Controller(object):
     options,args = self.option_parser.parse_args()
     return dict(vars(options).items())
     
-# obsolate: gearman related
-#
-#  def port_ok(host, port):
-#    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#    try:
-#      print "connecting to {0} on {1}".format(port, host)
-#      s.connect((host, int(port)))
-#      s.shutdown(2)
-#      return True;
-#    except:
-#      print sys.exc_info()[0]
-#      return False;
  
 
   # database init function:

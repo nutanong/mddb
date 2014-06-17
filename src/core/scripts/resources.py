@@ -9,8 +9,6 @@
 
 from abc import ABCMeta, abstractmethod, abstractproperty
 
-import dockers
-import simulators
 import os
 import platform
 from optparse import OptionParser
@@ -21,17 +19,36 @@ import time
 import threading
 import random
 import datetime
-import mddb_utils
 from multiprocessing import Process
-import impsolv_simulators
 import chunkIt
 import cStringIO
 import shutil
 import sys
+import imp
+
+# dictionary of resources: mapping resource_name -> resource_object
+resource_dict = {}
+
+# read multiple resource configurations
+def read_configs(fn):
+  with open(fn) as ofp:
+    configs = eval(ofp.read())
+
+  for k,v in d.items():
+    if v['res_mod_name']:
+      imp.load_source(v['res_mod_name'], v['res_mod_path'])
+      res_class        = eval("{res_mod_name}.{res_class_name}".format(**v))
+    else:
+      res_class        = eval("{res_class_name}".format(**v))
+
+    resource_dict[k] = res_class(v)
+  return
+
 
 
 # A base resource class provides implementations for resource handling methods such as
 # job deployment, data loading, data cleanup.
+
 
 class Resource(object):
 
@@ -42,15 +59,6 @@ class Resource(object):
   local_prefix      = '/damsl/projects/mddb'
   script_dirs       = ['mddb/scheduler/','mddb/templates/']
   gateway_host      = None
-  generator_options = { 'charmm':   simulators.CharmmSimulator,
-                        'namd':     simulators.NAMDSimulator,
-                        'gromacs':  simulators.GromacsSimulator,
-                        'fred':     dockers.FredDocker,
-                        'amber':    simulators.AmberSimulator,
-                        'membrane': simulators.MembraneSimulator,
-                        'dock6':    dockers.Dock6Docker,
-                        'impsolv':  impsolv_simulators.ImpSolvSimulator,
-                      }
 
   # Initialize resource configurations, e.g., #nodes per deployments, the name of the
   # job queue (if PBS), etc.
@@ -1059,52 +1067,6 @@ class DatascopeResource(ClusterResource):
 
     return cmd_st
 
-
-
-
-#=====================================================================================
-
-class HHPCResource(PBSResource):
-  gateway_host = 'hhpc'
-
-  @staticmethod
-  def get_paths():
-    d = { 'fred_bin':        '/home/yahmad/molecules/software/DD/OpenEye/openeye/arch/redhat-RHEL5-x64/oedocking/3.0.1/fred'
-         ,'omega2_bin':      '/home/yahmad/molecules/software/DD/OpenEye/openeye/arch/redhat-RHEL5-x64/omega/2.4.6/omega2'
-         ,'dock6_bin':       '/home/yahmad/molecules/software/DD/Dock/Dock/dock6/bin/dock6'
-         ,'namd2_bin':       '/home/yahmad/molecules/software/MD/NAMD/NAMD/NAMD_2.9_Linux-x86_64-multicore/namd2'
-         ,'charmm':      '/home/yahmad/molecules/software/MD/Charmm/c36a2_xlarge_dims'
-         ,'charmm-medium':      '/home/yahmad/molecules/software/MD/Charmm/c36a2_xlarge_dims'
-         ,'resource_prefix': '/home/yahmad'
-         ,'io_dir':          Resource.io_dir
-         ,'data_dir':        '/home/yahmad/molecules/data'
-         ,'local_prefix':    Resource.local_prefix
-        }
-    return d
-
-  @staticmethod
-  def compose_job_script(qname, input_data_fn_remote):
-    qsub_dict = { "PE": "8way 96", "QUEUE": "batch", "TIME": "00:60:00"
-                 ,"OUTFN": input_data_fn_remote + ".log"
-                 ,"PYTHONPATH": '/home/yahmad/nutanong/mddb/simulation:/home/yahmad/nutanong/mddb/scheduler:/home/yahmad/software/site-packages'
-                 ,"CMD": "python2.6 /home/yahmad/nutanong/mddb/scheduler/resources.py --resource hhpc --mode execute --jobdata {0}".format(input_data_fn_remote)}
-
-    template = "#!/bin/bash\n" +\
-               "#PBS -V\n" +\
-               "#PBS -o {OUTFN}\n" +\
-               "#PBS -e {OUTFN}.err\n" +\
-               "#PBS -q {QUEUE}\n" +\
-               "#PBS -l walltime={TIME}\n" +\
-               "#PBS -l nodes=1\n" +\
-               "cd /home/yahmad/nutanong/mddb\n" +\
-               "env PYTHONPATH={PYTHONPATH} {CMD}\n"
-
-    return template.format(**qsub_dict)
-#*************************************************************************************
-#*************************************************************************************
-#*************************************************************************************
-#*************************************************************************************
-# Below is fine
 
 
 #=====================================================================================
